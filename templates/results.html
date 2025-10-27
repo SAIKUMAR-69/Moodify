@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>🎵 Moodify Recommendations</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #1db954 0%, #0f0f0f 100%);
+      color: #fff;
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 0.3em;
+      color: #1ed760;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #cfcfcf;
+      margin-bottom: 2em;
+    }
+
+    .card {
+      background: rgba(25, 20, 20, 0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      padding: 20px 30px;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 1.2em;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      border-color: #1ed760;
+    }
+
+    .song-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .artist {
+      font-size: 1rem;
+      color: #b3ffcc;
+      margin-top: 0.3em;
+    }
+
+    .genre {
+      margin-top: 0.5em;
+      font-size: 0.9rem;
+      color: #9ae6b4;
+      opacity: 0.9;
+    }
+
+    .back-btn {
+      background: #1ed760;
+      color: #191414;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 30px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(30, 215, 96, 0.4);
+    }
+
+    .back-btn:hover {
+      background: #1db954;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 1rem;
+      color: #a3ffba;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎶 Moodify</h1>
+  <h2>Your vibe-based Spotify picks for: "{{ prompt }}"</h2>
+
+  {% if recommendations %}
+    {% for r in recommendations %}
+      {% set parts = r.split(' by ') %}
+      <div class="card">
+        <div class="song-title">{{ parts[0] }}</div>
+        {% if parts|length > 1 %}
+          {% set artist_genre = parts[1].split(' (') %}
+          <div class="artist">🎤 {{ artist_genre[0] }}</div>
+          {% if artist_genre|length > 1 %}
+            <div class="genre">🎧 {{ artist_genre[1].rstrip(')') }}</div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No matching songs found. Try describing your mood differently!</p>
+  {% endif %}
+
+  <a href="{{ url_for('index_route') }}" class="back-btn">← Back to Moodify</a>
+
+  <footer>🎵 Powered by Spotify – Your ultimate music mood matcher</footer>
+</body>
+</html>

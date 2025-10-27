@@ -1,0 +1,30 @@
+# Environment
+
+.env
+venv/
+**pycache**/
+*.pyc
+
+# IDE
+
+.vscode/
+.idea/
+
+# OS
+
+.DS_Store
+Thumbs.db
+
+# Data files
+
+instance/song_embeddings.npy
+instance/*.csv
+
+# Logs
+
+*.log
+
+# Cache
+
+*.pkl
+*.cache/

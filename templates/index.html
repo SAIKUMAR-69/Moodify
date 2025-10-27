@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Moodify – AI Song Recommender</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Poppins", system-ui, sans-serif;
+      background: linear-gradient(135deg, #1db954, #121212);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #1db954;
+    }
+    p {
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 1rem;
+      resize: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    textarea::placeholder { color: #aaa; }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    label {
+      color: #bbb;
+      font-size: 0.9rem;
+    }
+    input {
+      width: 60px;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 6px;
+      text-align: center;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    button {
+      background: #1db954;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 25px;
+    }
+    button:hover {
+      background: #1ed760;
+      transform: scale(1.05);
+    }
+
+    /* Equalizer animation */
+    .equalizer {
+      display: none;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 20px;
+    }
+    .bar {
+      width: 5px;
+      height: 20px;
+      background: #1db954;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+    .bar:nth-child(2) { animation-delay: -1.1s; }
+    .bar:nth-child(3) { animation-delay: -1s; }
+    .bar:nth-child(4) { animation-delay: -0.9s; }
+    .bar:nth-child(5) { animation-delay: -0.8s; }
+    @keyframes bounce {
+      0%, 40%, 100% { transform: scaleY(0.3); }
+      20% { transform: scaleY(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Moodify</h1>
+    <p>Describe your vibe, and we’ll recommend songs that match it 🎧</p>
+
+    <form id="moodForm" action="{{ url_for('recommend') }}" method="post">
+      <textarea name="prompt" placeholder="I'm feeling..."></textarea>
+      <div class="controls">
+        <label>Top candidates: <input type="number" name="top_k" value="10" min="3" max="50"/></label>
+        <label>Results: <input type="number" name="n_recs" value="5" min="1" max="20"/></label>
+      </div>
+      <button type="submit">🎵 Get Recommendations</button>
+    </form>
+
+    <div class="equalizer" id="loader">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('moodForm');
+    const loader = document.getElementById('loader');
+    form.addEventListener('submit', () => {
+      loader.style.display = 'flex';
+    });
+  </script>
+</body>
+</html>
